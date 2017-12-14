@@ -1,0 +1,110 @@
+// > start terminal
+// > swiftenvをインストール https://swiftenv.fuller.li/en/latest/installation.html
+$ git clone https://github.com/kylef/swiftenv.git ~/.swiftenv
+
+nano ~/.bash_profile
+```bash:bash_prifile
+# …
+export SWIFTENV_ROOT="$HOME/.swiftenv"
+export PATH="$SWIFTENV_ROOT/bin:$PATH"
+eval "$(swiftenv init -)"
+# …
+```
+
+$ . ~/.bash_profile
+$ exit
+
+// > restart terminal
+// > swiftenvのバージョン確認
+$ swiftenv
+Usage: swiftenv [--version] <command>
+
+  version   Displays the current active Swift version
+  versions  Lists all installed Swift versions
+  global    Sets the global version of Swift
+  local     Sets the local application-specific version of Swift
+  install   Installs a version of Swift
+  uninstall Uninstalls a specific Swift version
+  rehash    Installs shims for Swift binaries
+
+Visit https://swiftenv.fuller.li for more info.
+
+$ swiftenv versions
+* system
+  4.0.2
+
+$ swiftenv install 3.0.1
+
+$ swiftenv versions
+* 3.0.1 (set by /Users/xxxxx/.swiftenv/version)
+  4.0.2
+
+$ swiftenv global
+3.0.1
+
+$ swiftenv global 4.0.2
+$ swiftenv global
+4.0.2
+
+$ cd /Users/xxxxx/fromgit/study-swift-server-side
+$ mkdir 01_setup_swift
+$ cd 01_setup_swift/
+$ switfenv local 3.0.1
+$ swiftenv local
+3.0.1
+
+$ swiftenv global
+4.0.2
+
+// > swift packageを作成
+$ swift package init --type executable
+Creating executable package: 01_setup_swift
+Creating Package.swift
+Creating .gitignore
+Creating Sources/
+Creating Sources/main.swift
+Creating Tests/
+
+// > Packageを追加 https://github.com/apple/example-package-playingcard
+// > 参考 https://packagecatalog.com
+$ nano Package.swift
+```swift:Package.swift
+import PackageDescription
+
+let package = Package(
+    name: “01_setup_swift”,
+    dependencies:[
+        .Package(url: "https://github.com/apple/example-package-playingcard", majorVersion: 3),
+    ]
+)
+```
+
+// > swift packageをビルド
+$ swiftenv local 4.0.2
+$ swift build
+
+// > mainファイルを編集
+$ nano Sources/main.swift
+```swift:main.swift
+import PlayingCard
+
+let card = PlayingCard(rank: .queen, suit: .hearts)
+sayHello(name: "\(card)")
+```
+
+// > functionファイルを作成
+$ nano Sources/HelloFunctions.swift
+```swift:HelloFunctions.swift
+func sayHello(name: String) {
+    print("Hello, \(name) from Swift!")
+}
+```
+
+// > swift packageをビルド
+$ swift build
+Compile Swift Module 'TestSwift' (2 sources)
+Linking ./.build/x86_64-apple-macosx10.10/debug/01_setup_swift
+
+// > swift packageを実行
+$ .build/x86_64-apple-macosx10.10/debug/01_setup_swift
+Hello, ♡Q from Swift!

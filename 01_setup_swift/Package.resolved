@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "PlayingCard",
+        "repositoryURL": "https://github.com/apple/example-package-playingcard",
+        "state": {
+          "branch": null,
+          "revision": "ad433a75235389577eca1125ea9419a6ade8b253",
+          "version": "3.0.3"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
